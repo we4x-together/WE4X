@@ -1,22 +1,18 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import api from "../configs/api";
-
 export const fetchWorkspaces = createAsyncThunk(
   "workspace/fetchWorkspaces",
-  async ({ getToken }) => {
+  async ({ getToken } = {}) => {
     try {
-      const { data } = await api.get("/api/workspaces", {
-        headers: { Authorization: `Bearer ${await getToken()}` },
-      });
-      return data.workspaces || [];
+      // Support getToken being a function that returns a token, or a direct token string
+      const token = typeof getToken === 'function' ? await getToken() : getToken || null;
+      const headers = token ? { Authorization: 'Bearer ' + token } : {};
+      const { data } = await api.get("/api/workspaces", { headers });
+      return data?.workspaces || [];
     } catch (error) {
-      console.log(error?.response?.data?.message || error.message);
+      console.error(error?.response?.data?.message || error.message);
       return [];
     }
   },
-);
-
-const initialState = {
+);\r\n\r\nconst initialState = {
   workspaces: [],
   currentWorkspace: null,
   loading: false,
@@ -190,3 +186,9 @@ export const {
   deleteTask,
 } = workspaceSlice.actions;
 export default workspaceSlice.reducer;
+
+
+
+
+
+
