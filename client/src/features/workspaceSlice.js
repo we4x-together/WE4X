@@ -1,3 +1,6 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import api from "../configs/api";
+
 export const fetchWorkspaces = createAsyncThunk(
   "workspace/fetchWorkspaces",
   async ({ getToken } = {}) => {
@@ -12,7 +15,9 @@ export const fetchWorkspaces = createAsyncThunk(
       return [];
     }
   },
-);\r\n\r\nconst initialState = {
+);
+
+const initialState = {
   workspaces: [],
   currentWorkspace: null,
   loading: false,
@@ -186,6 +191,8 @@ export const {
   deleteTask,
 } = workspaceSlice.actions;
 export default workspaceSlice.reducer;
+
+
 
 
 
