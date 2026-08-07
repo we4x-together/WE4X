@@ -11,6 +11,7 @@ export const fetchWorkspaces = createAsyncThunk(
       return data.workspaces || [];
     } catch (error) {
       console.log(error?.response?.data?.message || error.message);
+      return [];
     }
   },
 );
